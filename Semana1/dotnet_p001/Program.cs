@@ -51,3 +51,26 @@ Console.WriteLine($"Subtracao: {subtracao}");
 Console.WriteLine($"Multiplicacao: {multiplicacao}");
 Console.WriteLine($"Divisao: {divisao}");
 #endregion
+
+#region 5 Operadores de Comparacao
+    int a = 5;
+    int b =8;
+
+    if (a > b)
+        {
+            Console.WriteLine("a é maior que b.");
+        }
+    
+    else
+        {
+            Console.WriteLine("a não é maior que b.");
+        }
+#endregion
+
+#region 6 Operadores de Igualdade
+string str1 = "Hello";
+string str2 = "World";
+bool strIguais;
+strIguais = str1.Equals(str2);
+Console.WriteLine($"As strings são iguais? {strIguais}");    
+#endregion
