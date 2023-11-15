@@ -74,3 +74,22 @@ bool strIguais;
 strIguais = str1.Equals(str2);
 Console.WriteLine($"As strings são iguais? {strIguais}");    
 #endregion
+
+#region 7 Operadores Logicos
+bool condicao1 = true;
+bool condicao2 = false;
+
+bool condicoesVerdadeiras = condicao1 && condicao2;
+Console.WriteLine($"As condicoes sao verdadeiras? {condicoesVerdadeiras}");
+#endregion
+
+#region 8 Desafio de Mistura de Operadores
+int num1 = 7;
+int num2 = 3;
+int num3 = 10;
+
+bool num1MaiorQueNum2 = num1 > num2;
+bool num3IgualSomaNum1Num2 = num3 == (num1 + num2);
+Console.WriteLine($"num1 é maior do que num2? {num1MaiorQueNum2}");
+Console.WriteLine($"num3 é igual a num1 + num2? {num3IgualSomaNum1Num2}");
+#endregion
