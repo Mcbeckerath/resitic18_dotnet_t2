@@ -28,6 +28,16 @@ public class Pessoa
     }
 }
 
+public class AlturaNegativaException : Exception
+{
+    public AlturaNegativaException(string message) : base(message) { }
+}
+
+public class PesoNegativoException : Exception
+{
+    public PesoNegativoException(string message) : base(message) { }
+}
+
 public class Treinador : Pessoa
 {
     public string CREF { get; set; }
@@ -36,5 +46,43 @@ public class Treinador : Pessoa
         : base(nome, dataNascimento, cpf)
     {
         CREF = cref;
+    }
+}
+public class Cliente : Pessoa
+{
+    private double altura;
+    private double peso;
+
+    public double Altura
+    {
+        get { return altura; }
+        set
+        {
+            if (value < 0)
+            {
+                throw new AlturaNegativaException("Altura não pode ser negativa.");
+            }
+            altura = value;
+        }
+    }
+
+    public double Peso
+    {
+        get { return peso; }
+        set
+        {
+            if (value < 0)
+            {
+                throw new PesoNegativoException("Peso não pode ser negativo.");
+            }
+            peso = value;
+        }
+    }
+
+    public Cliente(string nome, DateTime dataNascimento, string cpf, double altura, double peso)
+        : base(nome, dataNascimento, cpf)
+    {
+        Altura = altura;
+        Peso = peso;
     }
 }
