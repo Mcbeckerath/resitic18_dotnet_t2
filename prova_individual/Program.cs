@@ -1,92 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using namespace pessoa;
 
-public class Pessoa
-{
-    private string cpf;
 
-    public string Nome { get; set; }
-    public DateTime DataNascimento { get; set; }
-
-    public string CPF
-    {
-        get { return cpf; }
-        set
-        {
-            if (value.Length != 11)
-            {
-                throw new ArgumentException("O CPF deve ter exatamente 11 dígitos.");
-            }
-            cpf = value;
-        }
-    }
-
-    public Pessoa(string nome, DateTime dataNascimento, string cpf)
-    {
-        Nome = nome;
-        DataNascimento = dataNascimento;
-        CPF = cpf;
-    }
-}
-
-public class AlturaNegativaException : Exception
-{
-    public AlturaNegativaException(string message) : base(message) { }
-}
-
-public class PesoNegativoException : Exception
-{
-    public PesoNegativoException(string message) : base(message) { }
-}
-
-public class Treinador : Pessoa
-{
-    public string CREF { get; set; }
-
-    public Treinador(string nome, DateTime dataNascimento, string cpf, string cref)
-        : base(nome, dataNascimento, cpf)
-    {
-        CREF = cref;
-    }
-}
-public class Cliente : Pessoa
-{
-    private double altura;
-    private double peso;
-
-    public double Altura
-    {
-        get { return altura; }
-        set
-        {
-            if (value < 0)
-            {
-                throw new AlturaNegativaException("Altura não pode ser negativa.");
-            }
-            altura = value;
-        }
-    }
-
-    public double Peso
-    {
-        get { return peso; }
-        set
-        {
-            if (value < 0)
-            {
-                throw new PesoNegativoException("Peso não pode ser negativo.");
-            }
-            peso = value;
-        }
-    }
-
-    public Cliente(string nome, DateTime dataNascimento, string cpf, double altura, double peso)
-        : base(nome, dataNascimento, cpf)
-    {
-        Altura = altura;
-        Peso = peso;
-    }
-}
 public class Academia
 {
     public List<Cliente> Clientes { get; private set; }
@@ -108,5 +25,21 @@ public class Academia
         Treinadores.Add(treinador);
     }
 
+    public List<Treinador> RelatorioTreinadoresPorIdade(int idadeMinima, int idadeMaxima)
+    {
+        DateTime dataAtual = DateTime.Now;
+        return Treinadores.Where(treinador =>
+            (dataAtual.Year - treinador.DataNascimento.Year) >= idadeMinima &&
+            (dataAtual.Year - treinador.DataNascimento.Year) <= idadeMaxima
+        ).ToList();
+    }
 
+    public List<Cliente> RelatorioClientesPorIdade(int idadeMinima, int idadeMaxima)
+    {
+        DateTime dataAtual = DateTime.Now;
+        return Clientes.Where(cliente =>
+            (dataAtual.Year - cliente.DataNascimento.Year) >= idadeMinima &&
+            (dataAtual.Year - cliente.DataNascimento.Year) <= idadeMaxima
+        ).ToList();
+    }
 }
