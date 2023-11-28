@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Produto
 {
@@ -21,7 +22,8 @@ public class Program
             Console.WriteLine("2 - Consulta de Produto");
             Console.WriteLine("3 - Atualização de Estoque");
             Console.WriteLine("4 - Listar Estoque");
-            Console.WriteLine("5 - Sair");
+            Console.WriteLine("5 - Gerar Relatórios");
+            Console.WriteLine("6 - Sair");
             Console.Write("Escolha uma opção: ");
 
             string opcao = Console.ReadLine();
@@ -45,6 +47,10 @@ public class Program
                     break;
 
                 case "5":
+                    GerarRelatorios(estoque);
+                    break;
+
+                case "6":
                     Console.WriteLine("Saindo do programa.");
                     return;
 
@@ -69,7 +75,7 @@ public class Program
 
             Console.Write("Quantidade: ");
             int quantidade = int.Parse(Console.ReadLine());
-1
+
             Console.Write("Preço Unitário: ");
             decimal precoUnitario = decimal.Parse(Console.ReadLine());
 
@@ -162,6 +168,72 @@ public class Program
         foreach (var produto in estoque)
         {
             Console.WriteLine($"Código: {produto.Codigo}, Nome: {produto.Nome}, Quantidade: {produto.Quantidade}, Preço Unitário: {produto.PrecoUnitario:C}");
+        }
+    }
+
+    static void GerarRelatorios(List<Produto> estoque)
+    {
+        try
+        {
+            // Relatório 1: Lista de produtos com quantidade em estoque abaixo de um determinado limite informado pelo usuário.
+            Console.Write("\nRelatório 1: Digite o limite de quantidade para o relatório: ");
+            int limiteQuantidade = int.Parse(Console.ReadLine());
+
+            var produtosAbaixoDoLimite = estoque.Where(produto => produto.Quantidade < limiteQuantidade).ToList();
+
+            if (produtosAbaixoDoLimite.Count > 0)
+            {
+                Console.WriteLine($"\nProdutos com quantidade em estoque abaixo de {limiteQuantidade}:");
+                foreach (var produto in produtosAbaixoDoLimite)
+                {
+                    Console.WriteLine($"Código: {produto.Codigo}, Nome: {produto.Nome}, Quantidade: {produto.Quantidade}, Preço Unitário: {produto.PrecoUnitario:C}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"\nNão há produtos com quantidade em estoque abaixo de {limiteQuantidade}.");
+            }
+
+            // Relatório 2: Lista de produtos com valor entre um mínimo e um máximo informados pelo usuário.
+            Console.Write("\nRelatório 2: Digite o valor mínimo para o relatório: ");
+            decimal valorMinimo = decimal.Parse(Console.ReadLine());
+
+            Console.Write("Digite o valor máximo para o relatório: ");
+            decimal valorMaximo = decimal.Parse(Console.ReadLine());
+
+            var produtosEntreValores = estoque.Where(produto => produto.PrecoUnitario >= valorMinimo && produto.PrecoUnitario <= valorMaximo).ToList();
+
+            if (produtosEntreValores.Count > 0)
+            {
+                Console.WriteLine($"\nProdutos com valor entre {valorMinimo:C} e {valorMaximo:C}:");
+                foreach (var produto in produtosEntreValores)
+                {
+                    Console.WriteLine($"Código: {produto.Codigo}, Nome: {produto.Nome}, Quantidade: {produto.Quantidade}, Preço Unitário: {produto.PrecoUnitario:C}, Valor Total: {produto.Quantidade * produto.PrecoUnitario:C}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"\nNão há produtos com valor entre {valorMinimo:C} e {valorMaximo:C}.");
+            }
+
+            // Relatório 3: Informar o valor total do estoque e o valor total de cada produto de acordo com seu estoque.
+            decimal valorTotalEstoque = estoque.Sum(produto => produto.Quantidade * produto.PrecoUnitario);
+            Console.WriteLine($"\nRelatório 3: Valor total do estoque: {valorTotalEstoque:C}");
+
+            Console.WriteLine("\nValor total de cada produto de acordo com seu estoque:");
+            foreach (var produto in estoque)
+            {
+                decimal valorTotalProduto = produto.Quantidade * produto.PrecoUnitario;
+                Console.WriteLine($"Código: {produto.Codigo}, Nome: {produto.Nome}, Valor Total: {valorTotalProduto:C}");
+            }
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("Erro: Formato inválido. Certifique-se de inserir valores numéricos para o limite de quantidade, valor mínimo e valor máximo.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro: {ex.Message}");
         }
     }
 
