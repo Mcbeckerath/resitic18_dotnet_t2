@@ -28,4 +28,13 @@ public class Pessoa
     }
 }
 
+public class Treinador : Pessoa
+{
+    public string CREF { get; set; }
 
+    public Treinador(string nome, DateTime dataNascimento, string cpf, string cref)
+        : base(nome, dataNascimento, cpf)
+    {
+        CREF = cref;
+    }
+}
