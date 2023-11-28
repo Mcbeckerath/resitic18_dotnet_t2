@@ -19,8 +19,9 @@ public class Program
         {
             Console.WriteLine("\n1 - Cadastro de Produto");
             Console.WriteLine("2 - Consulta de Produto");
-            Console.WriteLine("3 - Listar Estoque");
-            Console.WriteLine("4 - Sair");
+            Console.WriteLine("3 - Atualização de Estoque");
+            Console.WriteLine("4 - Listar Estoque");
+            Console.WriteLine("5 - Sair");
             Console.Write("Escolha uma opção: ");
 
             string opcao = Console.ReadLine();
@@ -36,10 +37,14 @@ public class Program
                     break;
 
                 case "3":
-                    ListarEstoque(estoque);
+                    AtualizarEstoque(estoque);
                     break;
 
                 case "4":
+                    ListarEstoque(estoque);
+                    break;
+
+                case "5":
                     Console.WriteLine("Saindo do programa.");
                     return;
 
@@ -64,7 +69,7 @@ public class Program
 
             Console.Write("Quantidade: ");
             int quantidade = int.Parse(Console.ReadLine());
-
+1
             Console.Write("Preço Unitário: ");
             decimal precoUnitario = decimal.Parse(Console.ReadLine());
 
@@ -115,6 +120,42 @@ public class Program
         }
     }
 
+    static void AtualizarEstoque(List<Produto> estoque)
+    {
+        try
+        {
+            Console.Write("\nAtualização de Estoque - Digite o Código do Produto: ");
+            int codigoAtualizacao = int.Parse(Console.ReadLine());
+
+            Produto produtoAtualizacao = BuscarProdutoPorCodigo(estoque, codigoAtualizacao);
+
+            Console.Write("Digite a quantidade para adicionar (+) ou remover (-): ");
+            int quantidadeAtualizacao = int.Parse(Console.ReadLine());
+
+            if (quantidadeAtualizacao < 0 && Math.Abs(quantidadeAtualizacao) > produtoAtualizacao.Quantidade)
+            {
+                Console.WriteLine($"Erro: Quantidade insuficiente em estoque para remover {Math.Abs(quantidadeAtualizacao)} unidades do produto.");
+                return;
+            }
+
+            produtoAtualizacao.Quantidade += quantidadeAtualizacao;
+
+            Console.WriteLine($"Estoque atualizado com sucesso - Novo estoque do produto {produtoAtualizacao.Nome}: {produtoAtualizacao.Quantidade} unidades.");
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("Erro: Formato inválido. Certifique-se de inserir um valor numérico para o Código e a Quantidade.");
+        }
+        catch (ProdutoNaoEncontradoException ex)
+        {
+            Console.WriteLine($"Erro: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro: {ex.Message}");
+        }
+    }
+
     static void ListarEstoque(List<Produto> estoque)
     {
         Console.WriteLine("\nEstoque Atual:");
@@ -143,4 +184,3 @@ public class ProdutoNaoEncontradoException : Exception
     {
     }
 }
-
